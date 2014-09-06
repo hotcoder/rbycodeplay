@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+    ul {
+        list-style: none;
+        float: left;
+        width: 20%;
+        background-color: yellow;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #333;
+    }
+    th{
+      padding-left:80px;
+    }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>ToDo List</h1>
+
+    <input type="text" id="todoInput" />
+    <button id="todoBttn">ADD</button>
+    <hr/>
+
+
+    <div id="headings">
+    <table>
+      <th>
+        <h2>In Complete Tasks</h2>
+      </th>
+      <th>
+        <h2>Completed Tasks</h2>
+      </th>
+    </table>
+
+
+      
+      
+    </div>
+
+
+    <ul id="todo">
+
+    </ul>
+
+
+
+
+    <ul id="completed">
+
+    </ul>
+
+    <script>
+    (function() {
+        var input = document.getElementById('todoInput');
+        var button = document.getElementById('todoBttn');
+        var lists = {
+
+            todo: document.getElementById('todo'),
+            completed: document.getElementById('completed')
+
+        };
+        var makeTaskHtml = function(str, listener) {
+            var ele = document.createElement("li");
+            var checkBoc = document.createElement("input");
+            var label = document.createElement("span");
+            label.textContent = str;
+            checkBoc.type = 'checkbox';
+            checkBoc.addEventListener('click', listener);
+            checkBoc.checked = '';
+            ele.appendChild(checkBoc);
+            ele.appendChild(label);
+            //ele.textContent = str;
+            return ele;
+        };
+
+        var checkBoxListener = function(event) {
+
+            var liElement = event.target.parentElement;
+
+            var uiId = liElement.parentElement.id;
+
+
+            lists[uiId === "todo" ? "completed" : "todo"].appendChild(liElement);
+
+            this.checked = '';
+
+        }
+
+        var addTask = function(list, task) {
+
+            list.appendChild(task);
+        }
+
+
+        var onInput = function() {
+            var inputTask = input.value.trim();
+
+            if(inputTask.length > 0)
+            {
+              addTask(lists.todo, makeTaskHtml(inputTask, checkBoxListener));
+
+              input.value="";  
+            }
+        };
+
+        button.addEventListener('click', onInput);
+
+        input.addEventListener('keyup',function(event){
+          var code = event.keyCode;
+
+          if(code === 13)
+          {
+            onInput();
+          }
+
+        });
+
+        input.focus();
+
+
+
+    })();
+    </script>
+
+
+</body>
+
+</html>
